@@ -1,16 +1,14 @@
 package com.virhon.tests.covid19.dao;
 
-import com.virhon.tests.covid19.domain.*;
+import com.virhon.tests.covid19.domain.CountryCase;
+import com.virhon.tests.covid19.domain.CovidSummaryCase;
+import com.virhon.tests.covid19.domain.Summary;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class DataManager {
@@ -21,8 +19,6 @@ public class DataManager {
     private SummaryRepository summaryRepository;
     @Autowired
     private CountryCaseRepository countryCaseRepository;
-    @Autowired
-    private CovidCaseRepository covidCaseRepository;
 
     /**
      *
@@ -43,31 +39,15 @@ public class DataManager {
         return covidSummaryCase;
     }
 
-    public Optional<Summary> getSummary() {
+    public Optional<CovidSummaryCase> getSummary() {
         final Long id = this.SUMMARY_ID;
         final CovidSummaryCase covidSummaryCase = new CovidSummaryCase();
-        return this.summaryRepository.findById(id);
-    }
-
-    public List<CovidCase> saveAllCases(List<CovidCase> cases) {
-        final List<CovidCase> result = new ArrayList<>();
-        for (Integer i=0;i<cases.size();) {
-            LOGGER.info("Saving batch started from ".concat(i.toString()));
-            final int to;
-            if (i+BATCH_SIZE < cases.size()) {
-                to = i+BATCH_SIZE;
-            } else {
-                to = cases.size();
-            }
-            final List<CovidCase> subList = cases.subList(i, to);
-            this.covidCaseRepository.saveAll(subList);
-            result.addAll(subList);
-            i+=BATCH_SIZE;
+        final Optional<Summary> summary = this.summaryRepository.findById(id);
+        if (!summary.isPresent()) {
+            return Optional.empty();
         }
-        return result;
-    }
-
-    public List<CovidCase> readAllByDate(Date date) {
-        return this.covidCaseRepository.findAllByDateOf(date);
+        covidSummaryCase.setGlobal(summary.get());
+        covidSummaryCase.setCountries(summary.get().getCountries());
+        return Optional.of(covidSummaryCase);
     }
 }

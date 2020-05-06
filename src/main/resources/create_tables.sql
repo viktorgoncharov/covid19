@@ -1,19 +1,3 @@
-create table if not exists covid_case(
-    id              AUTO_INCREMENT PRIMARY KEY,
-    country         VARCHAR(60),
-    country_code    VARCHAR(10),
-    province        VARCHAR(30),
-    city            VARCHAR(60),
-    city_code       VARCHAR(10),
-    lat             VARCHAR(10),
-    lon             VARCHAR(10),
-    confirmed       INT,
-    deaths          INT,
-    recovered       INT,
-    active          INT,
-    date_of         TIMESTAMP
-);
-
 create table if not exists summary(
     id              AUTO_INCREMENT PRIMARY KEY,
     new_confirmed   INT,

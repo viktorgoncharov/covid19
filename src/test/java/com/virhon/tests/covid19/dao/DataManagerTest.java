@@ -1,7 +1,6 @@
 package com.virhon.tests.covid19.dao;
 
 import com.virhon.tests.covid19.domain.CountryCase;
-import com.virhon.tests.covid19.domain.CovidCase;
 import com.virhon.tests.covid19.domain.CovidSummaryCase;
 import com.virhon.tests.covid19.domain.Summary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,8 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @EnableJpaRepositories(basePackages = "com.virhon.tests.covid19")
@@ -55,9 +52,9 @@ public class DataManagerTest extends AbstractTestNGSpringContextTests {
         csCase.setCountries(Arrays.asList(countryCase));
         csCase = this.dataManager.saveSummary(csCase);
         final Long id = summary.getId();
-        final Optional<Summary> gotten = this.dataManager.getSummary();
+        final Optional<CovidSummaryCase> gotten = this.dataManager.getSummary();
         Assert.assertTrue(gotten.isPresent());
-        Assert.assertEquals(gotten.get().getId(), id);
-        Assert.assertEquals(gotten.get().getTotalDeaths(), Integer.valueOf(0));
+        Assert.assertEquals(gotten.get().getGlobal().getId(), id);
+        Assert.assertEquals(gotten.get().getGlobal().getTotalDeaths(), Integer.valueOf(0));
     }
 }
