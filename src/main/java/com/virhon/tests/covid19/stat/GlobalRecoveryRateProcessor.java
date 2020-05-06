@@ -10,9 +10,9 @@ public class GlobalRecoveryRateProcessor implements Processor {
     public Value calculateValue(DataSource dataSource) {
         final GlobalRecoveryRate value = new GlobalRecoveryRate();
         final Summary summary = dataSource.getGlobal();
-        final BigDecimal totalDeaths = new BigDecimal(summary.getTotalDeaths());
         final BigDecimal totalRecovered = new BigDecimal(summary.getTotalRecovered());
-        value.setValue(totalDeaths.divide(totalRecovered, 2, RoundingMode.HALF_UP));
+        final BigDecimal totalConfirmed = new BigDecimal(summary.getTotalConfirmed());
+        value.setValue(totalRecovered.divide(totalConfirmed, 2, RoundingMode.HALF_UP));
         return value;
     }
 }

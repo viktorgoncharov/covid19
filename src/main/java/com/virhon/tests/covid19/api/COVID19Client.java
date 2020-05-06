@@ -11,14 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Optional;
 
 @Component
 public class COVID19Client {
+    final static Logger LOGGER = Logger.getLogger(COVID19Client.class);
     @Autowired
     private Config config;
-    final static Logger LOGGER = Logger.getLogger(COVID19Client.class);
     HttpHeaders headers = new HttpHeaders();
     HttpEntity<String> entity = new HttpEntity<String>(headers);
     RestTemplate restTemplate = new RestTemplate();
